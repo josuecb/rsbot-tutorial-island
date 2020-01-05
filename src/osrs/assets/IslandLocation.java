@@ -5,7 +5,8 @@ public class IslandLocation {
     public static String CHOOSE_DISPLAY_NAME = "Choosing a Display Name";
     public static String SETTING_APPEARANCE = "Setting your appearance";
     public static String GETTING_STARTED = "Getting started";
-    public static String OPTION_MENU = "Options menu";
+    public static String OPTION_MENU = "Please click on the flashing spanner icon found at the bottom";
+    public static String OPTION_MENU_TALK = "On the side panel, you can now see a variety of game options";
 
     public static String YOU_VE_GIVEN_AN_ITEM = "You've been given an item";
     public static String YOU_VE_GAINED_SOME_EXP = "You've gained some experience";
@@ -17,8 +18,13 @@ public class IslandLocation {
     public static String LEARN_QUEST = "It's time to learn about quests!";
     public static String QUEST_JOURNAL = "Quest journal";
     public static String QUEST_JOURNAL_TALK = "Talk to the quest guide again for an explanation on how it works.";
-    public static String MOVING_AFTER_RUN_ACTIVATED = "Remember, you can use your arrow keys to rotate the camera.";
-    public static String MOVING_ON_AFTER_COOKING = "Follow the path until you get to the door with the yellow arrow above it.";
+
+
+    // TODO: Write complete message
+    public static String MOVING_AFTER_COOKING_FISH = "Remember, you can use your arrow keys to rotate the camera.";
+
+//    public static String MOVING_ON_AFTER_COOKING = "Follow the path until you get to the door with the yellow arrow above it. Remember, you can use your arrow keys to rotate the camera.";
+    public static String MOVING_ON_AFTER_COOKING = "Follow the path to the next guide. When you get there, click on the door to pass through it. Remember, you can use your arrow keys to rotate the camera.";
     public static String MOVING_ON_AFTER_QUEST = "It's time to enter some caves.";
     public static String MOVING_ON_AFTER_KITCHEN = "You've baked your first loaf of bread.";
     public static String SURVIVAL_EXPERT_GIVES_YOU_NET = "The survival expert gives you a <col=000080>small fishing net<col=000000>.";

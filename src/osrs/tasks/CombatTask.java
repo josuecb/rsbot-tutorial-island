@@ -7,8 +7,8 @@ import osrs.TabChanger;
 import osrs.Task;
 import osrs.assets.ITEM;
 import osrs.assets.NPC;
-import z.P;
 
+import java.util.Comparator;
 import java.util.concurrent.Callable;
 
 public class CombatTask extends Task {
@@ -35,7 +35,7 @@ public class CombatTask extends Task {
 
     @Override
     public boolean activate() {
-        return !ctx.players.local().healthBarVisible();
+        return !ctx.players.local().healthBarVisible() && !ctx.players.local().inMotion();
     }
 
     @Override
@@ -45,52 +45,61 @@ public class CombatTask extends Task {
 
 
     private void attackNPC(int npcId) {
-        this.switchGear();
+        if (this.underAttackAlready())
+            this.underAttackWarning().click();
 
-        Npc monster = ctx.npcs.select().id(npcId).nearest()
-                .sort((n1, n2) -> Boolean.compare(n1.inViewport(), n2.inViewport()))
-                .limit(5)
-                .select(npc -> !npc.interacting().valid() && npc.tile().matrix(ctx).reachable())
-                .poll();
+        if (!ctx.players.local().healthBarVisible() && !ctx.players.local().inMotion()) {
+            this.switchGear();
 
-        if (this.type == Type.RANGE || this.type == Type.MAGIC) {
-            monster = ctx.npcs.select().id(npcId).nearest()
+            Npc monster = ctx.npcs.select().id(npcId).nearest()
                     .sort((n1, n2) -> Boolean.compare(n1.inViewport(), n2.inViewport()))
                     .limit(5)
-                    .select(npc -> !npc.interacting().valid())
+                    .select(npc -> !npc.interacting().valid() && npc.tile().matrix(ctx).reachable())
                     .poll();
-        }
 
-        ctx.camera.turnTo(monster);
+            if (this.type == Type.RANGE || this.type == Type.MAGIC) {
+                monster = ctx.npcs.select().id(npcId).nearest()
+                        .sort(Comparator.comparingDouble(n -> n.tile().distanceTo(ctx.players.local().tile())))
+                        .select(npc -> !npc.interacting().valid())
+                        .poll();
+            }
 
-        System.out.println("Distance: " + monster.tile().distanceTo(ctx.players.local().tile()));
-        System.out.println(monster.name());
+            ctx.camera.turnTo(monster);
 
-        if (monster.valid()) {
-            if (this.type == Type.MAGIC) {
-                TabChanger t = new TabChanger(ctx);
-                t.changeTo(Game.Tab.MAGIC);
+            System.out.println("Distance: " + monster.tile().distanceTo(ctx.players.local().tile()));
+            System.out.println(monster.name());
 
-                if (ctx.magic.ready(Magic.Spell.WIND_STRIKE) && !ctx.magic.cast(Magic.Spell.WIND_STRIKE)) {
-                    ctx.magic.cast(Magic.Spell.WIND_STRIKE);
-                    Helper.smartSecondsGen();
-                    ctx.players.local().interact("Cast");
+            if (monster.valid()) {
+                if (this.type == Type.MAGIC) {
+                    TabChanger t = new TabChanger(ctx);
+                    t.changeTo(Game.Tab.MAGIC);
+
+                    if (ctx.magic.ready(Magic.Spell.WIND_STRIKE) && !ctx.magic.cast(Magic.Spell.WIND_STRIKE)) {
+                        ctx.magic.cast(Magic.Spell.WIND_STRIKE);
+                        Helper.smartSecondsGen();
+                        System.out.println("Casting");
+                        monster.interact("Cast");
+                    }
+                } else {
+                    System.out.println("ATTACKING NOW");
+                    System.out.println(ctx.players.local().animation());
+                    monster.interact("Attack");
                 }
             } else {
-                ctx.players.local().interact("Attack");
+                System.out.println("monster is not valid");
             }
-        } else {
-            System.out.println("monster is not valid");
-        }
 
-        Npc finalMonster = monster;
-        Condition.wait(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                heal();
-                return finalMonster.interacting().healthPercent() > 0 || !finalMonster.valid();
-            }
-        }, Helper.smartSecondsGen(), 4);
+            Npc finalMonster = monster;
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    heal();
+                    return finalMonster.interacting().healthPercent() > 0 || !finalMonster.valid();
+                }
+            }, Helper.smartSecondsGen(), 4);
+        } else {
+            System.out.println("Combating already");
+        }
     }
 
     private void heal() {
@@ -156,6 +165,14 @@ public class CombatTask extends Task {
         MELEE,
         RANGE,
         MAGIC
+    }
+
+    public boolean underAttackAlready() {
+        return this.underAttackWarning().visible();
+    }
+
+    public Component underAttackWarning() {
+        return ctx.widgets.component(162, 45);
     }
 
     public void switchGear() {

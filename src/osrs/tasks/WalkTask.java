@@ -3,6 +3,7 @@ package osrs.tasks;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
+import osrs.Helper;
 import osrs.Task;
 import osrs.Walker;
 import org.powerbot.script.Area;
@@ -93,6 +94,6 @@ public class WalkTask extends Task {
                     ctx.camera.turnTo(ctx.objects.select().id(rotateTo).nearest().poll());
                 return ctx.players.local().inMotion();
             }
-        }, 1000, 1);
+        }, Helper.smartSecondsGen(), 5);
     }
 }

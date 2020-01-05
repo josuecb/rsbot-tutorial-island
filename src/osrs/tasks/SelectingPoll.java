@@ -8,6 +8,7 @@ import osrs.Helper;
 import osrs.Task;
 import osrs.TutorialLocation;
 import osrs.assets.IslandLocation;
+import osrs.assets.OBJECTS;
 
 import java.util.concurrent.Callable;
 
@@ -24,17 +25,16 @@ public class SelectingPoll extends Task {
     @Override
     public void execute() {
         if (!this.isOpened()) {
+            System.out.println("is not opened Yet");
             pollBooth().interact("Use");
 
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
                     TutorialLocation location = new TutorialLocation(ctx);
-                    if (location.is(IslandLocation.POLL_MOVING_ON)) {
-                        flagNextMessage().click();
-                        return true;
-                    }
-                    return false;
+
+                    flagNextMessage().click();
+                    return true;
                 }
             }, Helper.smartSecondsGen(), 5);
         } else {
@@ -44,7 +44,7 @@ public class SelectingPoll extends Task {
 
 
     private GameObject pollBooth() {
-        return ctx.objects.select().nearest().poll();
+        return ctx.objects.select().id(OBJECTS.POLL_BOOTH).nearest().poll();
     }
 
     private boolean isOpened() {

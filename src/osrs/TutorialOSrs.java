@@ -3,7 +3,6 @@ package osrs;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
-import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.*;
 import osrs.assets.*;
 import osrs.tasks.*;
@@ -36,7 +35,9 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             false,
             false,
             false,
+            false,
     };
+
     int count = 0;
 
     @Override
@@ -54,11 +55,18 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
     public List<Task> detectLocation() {
         List<Task> taskList = new ArrayList<Task>();
 
-
         TutorialLocation location = new TutorialLocation(ctx);
 
         if (location.is(IslandLocation.CHOOSE_DISPLAY_NAME)) {
-            taskList.add(new ChooseName(ctx, "redempl4"));
+            taskList.add(new ChooseName(ctx, "redempl6"));
+        } else if (location.is(IslandLocation.OPTION_MENU)) {
+            System.out.println("OPTION MENU");
+            taskList.add(new CustomSettingTask(ctx));
+            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.OPTION_MENU));
+        } else if (location.is(IslandLocation.OPTION_MENU_TALK)) {
+            System.out.println("OPTION MENU TALK");
+            taskList.add(new CustomSettingTask(ctx));
+            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.OPTION_MENU_TALK));
         } else if (location.is(IslandLocation.YOU_VE_GIVEN_AN_ITEM)) {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
@@ -87,13 +95,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             ctx.widgets.component(193, 0, 2).click();
             System.out.println("Can continue?: " + ctx.chat.canContinue());
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_KITCHEN)) {
-            if (!AREA.afterWardsOutsideKitchenArea.containsOrIntersects(ctx.players.local())) {
-                Tile randomTile = AREA.afterWardsOutsideKitchenArea.getRandomTile();
-                Tile[] tiles = {ctx.players.local().tile(), randomTile};
-
-                Walker w = new Walker(ctx);
-                w.walkPath(tiles);
-            }
+            taskList.add(new WalkTask(ctx, AREA.afterWardsOutsideKitchenArea));
         } else if (location.is(IslandLocation.FANCY_A_RUN)) {
             System.out.println("Fancy a run");
             Component runComp = ctx.widgets.component(160, 24);
@@ -105,46 +107,34 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
                 runComp.click();
             }
 
-        } else if (location.is(IslandLocation.MOVING_AFTER_RUN_ACTIVATED)) {
-            System.out.println("Going to quest area");
+        } else if (location.is(IslandLocation.MOVING_ON_AFTER_COOKING)) {
+            System.out.println("Going to quest area@@@@@@@@@@@@@");
             taskList.add(new WalkTask(ctx, AREA.questTutorialArea));
-
-//            if (!AREA.questTutorialArea.containsOrIntersects(ctx.players.local())) {
-//                Tile randomTile = AREA.questTutorialArea.getRandomTile();
-//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
-//
-//                Walker w = new Walker(ctx);
-//                w.walkPath(tiles);
-//            }
-
+        } else if (location.is(IslandLocation.MOVING_AFTER_COOKING_FISH)) {
+            System.out.println("Going outside");
+            taskList.add(new WalkTask(ctx, AREA.kitchenTutorialArea));
         } else if (location.is(IslandLocation.LEARN_QUEST)) {
-            System.out.println("QUEST AREA");
+            System.out.println("Talking to Quest Guide");
             taskList.add(new TalkToEntity(ctx, NPC.QUEST_GUIDE, IslandLocation.LEARN_QUEST));
         } else if (location.is(IslandLocation.QUEST_JOURNAL_TALK)) {
             System.out.println("QUEST JOURNAL");
             taskList.add(new TalkToEntity(ctx, NPC.QUEST_GUIDE, IslandLocation.QUEST_JOURNAL_TALK));
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_QUEST)) {
             System.out.println("MOVING TO CAVE");
-            if (!AREA.miningStartingPointArea.containsOrIntersects(ctx.players.local())) {
-                Tile randomTile = AREA.miningStartingPointArea.getRandomTile();
-                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+            taskList.add(new WalkTask(ctx, AREA.miningStartingPointArea, new String[]{"staircase"}));
 
-                Walker w = new Walker(ctx);
-                w.avoidChecking("staircase");
-                w.walkPath(tiles);
-            }
+//            if (!AREA.miningStartingPointArea.containsOrIntersects(ctx.players.local())) {
+//                Tile randomTile = AREA.miningStartingPointArea.getRandomTile();
+//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+//
+//                Walker w = new Walker(ctx);
+//                w.avoidChecking("staircase");
+//                w.walkPath(tiles);
+//            }
         } else if (location.is(IslandLocation.MINING_AND_SMITHING_WALK)) {
             System.out.println("MOVING TO MINING");
             taskList.add(new WalkTask(ctx, AREA.miningTutorialArea));
             taskList.add(new TalkToEntity(ctx, NPC.MINING_INSTRUCTOR, IslandLocation.MINING_AND_SMITHING_WALK));
-
-//            if (!AREA.miningTutorialArea.containsOrIntersects(ctx.players.local())) {
-//                Tile randomTile = AREA.miningTutorialArea.getRandomTile();
-//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
-//
-//                Walker w = new Walker(ctx);
-//                w.walkPath(tiles);
-//            }
         } else if (location.is(IslandLocation.MINING_TIN_ORE)) {
             System.out.println("Mining tin ore");
             taskList.add(new WalkTask(ctx, AREA.tinOreTutorialArea));
@@ -160,13 +150,16 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.QUESTS);
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_COOKING)) {
-            if (!AREA.kitchenTutorialArea.containsOrIntersects(ctx.players.local())) {
-                Tile randomTile = AREA.kitchenTutorialArea.getRandomTile();
-                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+            System.out.println("Going to kitchen area");
+            taskList.add(new WalkTask(ctx, AREA.kitchenTutorialArea));
 
-                Walker w = new Walker(ctx);
-                w.walkPath(tiles);
-            }
+//            if (!AREA.kitchenTutorialArea.containsOrIntersects(ctx.players.local())) {
+//                Tile randomTile = AREA.kitchenTutorialArea.getRandomTile();
+//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+//
+//                Walker w = new Walker(ctx);
+//                w.walkPath(tiles);
+//            }
         } else if (location.is(IslandLocation.SMITHING_SMELT_BRONZE_BAR)) {
             System.out.println("smelting ore");
             taskList.add(new WalkTask(ctx, AREA.furnaceTutorialArea));
@@ -268,10 +261,9 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
             taskList.add(new WalkTask(ctx, AREA.bankArea));
             taskList.add(new Banking(ctx));
-
+            taskList.add(new SelectingPoll(ctx));
         } else if (location.is(IslandLocation.POLL_BOOTH) || location.is(IslandLocation.A_FLAG_APPEARS)) {
             System.out.println("Checking Poll");
-
             taskList.add(new WalkTask(ctx, AREA.pollArea));
             taskList.add(new SelectingPoll(ctx));
 
@@ -351,10 +343,6 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new CustomizeAvatar(ctx));
         } else if (location.is(IslandLocation.GETTING_STARTED)) {
             taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.GETTING_STARTED));
-        } else if (location.is(IslandLocation.OPTION_MENU)) {
-            System.out.println("OPTION MENU");
-            taskList.add(new CustomSettingTask(ctx));
-            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.OPTION_MENU));
         } else {
             TutorialLocation tl = new TutorialLocation(ctx);
             tl.smartChecker();

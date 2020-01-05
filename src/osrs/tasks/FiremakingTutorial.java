@@ -3,14 +3,13 @@ package osrs.tasks;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.GameObject;
+import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Item;
 import osrs.Helper;
 import osrs.Task;
 import osrs.Walker;
 import osrs.assets.AREA;
 import osrs.assets.ITEM;
-import osrs.assets.OBJECTS;
 
 import java.util.concurrent.Callable;
 
@@ -38,9 +37,22 @@ public class FiremakingTutorial extends Task {
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
+                    if (!canLight()) {
+                        System.out.println("Can't light something in then move");
+                        WalkTask wt = new WalkTask(ctx, AREA.fishingTutorialArea);
+                        wt.execute(); // Execute no matter what
+                    }
                     return ctx.players.local().animation() != -1;
                 }
             }, Helper.smartSecondsGen(), 1);
         }
+    }
+
+    private boolean canLight() {
+        return !cantLightWarning().visible();
+    }
+
+    private Component cantLightWarning() {
+        return ctx.widgets.component(229, 1);
     }
 }
