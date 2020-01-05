@@ -6,6 +6,7 @@ import org.powerbot.script.rt4.ClientContext;
 import osrs.Task;
 import osrs.Walker;
 import org.powerbot.script.Area;
+import osrs.assets.OBJECTS;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -14,28 +15,65 @@ public class WalkTask extends Task {
     Walker w;
     Area area;
     String[] avoidTypes;
+    Tile specificTile;
+    int rotateTo;
 
     public WalkTask(ClientContext ctx, Area area) {
         super(ctx);
         this.area = area;
-        avoidTypes = new String[]{};
+        this.avoidTypes = new String[]{};
+        this.rotateTo = -1;
+    }
+
+    public WalkTask(ClientContext ctx, Tile specificTile) {
+        super(ctx);
+        this.area = null;
+        this.specificTile = null;
+        this.specificTile = specificTile;
+        this.avoidTypes = new String[]{};
+        this.rotateTo = -1;
+
     }
 
     public WalkTask(ClientContext ctx, Area area, String[] avoidBoundaryTypes) {
         super(ctx);
         this.area = area;
+        this.specificTile = null;
         this.avoidTypes = avoidBoundaryTypes;
+        this.rotateTo = -1;
+    }
+
+    public WalkTask(ClientContext ctx, Area area, int rotateTo) {
+        super(ctx);
+        this.area = area;
+        this.specificTile = null;
+        this.avoidTypes = new String[]{};
+        this.rotateTo = rotateTo;
+    }
+
+    public WalkTask(ClientContext ctx, Tile specificTile, int rotateTo) {
+        super(ctx);
+        this.area = null;
+        this.specificTile = null;
+        this.specificTile = specificTile;
+        this.avoidTypes = new String[]{};
+        this.rotateTo = rotateTo;
+
     }
 
     @Override
     public boolean activate() {
-        return !ctx.players.local().inMotion() && !area.containsOrIntersects(ctx.players.local());
+        return !ctx.players.local().inMotion() &&
+                (area != null && !area.containsOrIntersects(ctx.players.local())
+                        || (area == null && ctx.players.local().tile().distanceTo(this.specificTile) > 2));
     }
 
     @Override
     public void execute() {
         System.out.println("Start Walking");
-        Tile randomTile = this.area.getRandomTile();
+
+
+        Tile randomTile = this.area == null ? this.specificTile : this.area.getRandomTile();
         Tile[] tiles = {ctx.players.local().tile(), randomTile};
 
         System.out.println("Random Tile: " + randomTile.toString());
@@ -51,6 +89,8 @@ public class WalkTask extends Task {
             @Override
             public Boolean call() throws Exception {
                 System.out.println("Waiting");
+                if (rotateTo > 0)
+                    ctx.camera.turnTo(ctx.objects.select().id(rotateTo).nearest().poll());
                 return ctx.players.local().inMotion();
             }
         }, 1000, 1);

@@ -15,4 +15,7 @@ public class OBJECTS {
 
     public static int ANVIL = 2097;
 
+    public static int POLL_BOOTH = 26801;
+    public static int CHAPEL_DOOR = 9723;
+
 }

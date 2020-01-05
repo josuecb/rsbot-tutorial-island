@@ -1,8 +1,10 @@
 package osrs;
 
-import org.powerbot.script.*;
+import org.powerbot.script.Condition;
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.Script;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.*;
-import org.powerbot.script.rt4.ClientContext;
 import osrs.assets.*;
 import osrs.tasks.*;
 
@@ -14,6 +16,15 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
     List<Task> taskList = new ArrayList<Task>();
 
     public static boolean[] tutorSpoken = {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
@@ -96,13 +107,15 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.MOVING_AFTER_RUN_ACTIVATED)) {
             System.out.println("Going to quest area");
-            if (!AREA.questTutorialArea.containsOrIntersects(ctx.players.local())) {
-                Tile randomTile = AREA.questTutorialArea.getRandomTile();
-                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+            taskList.add(new WalkTask(ctx, AREA.questTutorialArea));
 
-                Walker w = new Walker(ctx);
-                w.walkPath(tiles);
-            }
+//            if (!AREA.questTutorialArea.containsOrIntersects(ctx.players.local())) {
+//                Tile randomTile = AREA.questTutorialArea.getRandomTile();
+//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
+//
+//                Walker w = new Walker(ctx);
+//                w.walkPath(tiles);
+//            }
 
         } else if (location.is(IslandLocation.LEARN_QUEST)) {
             System.out.println("QUEST AREA");
@@ -199,9 +212,14 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.COMBAT_GO_IN)) {
             System.out.println("combat go in");
             taskList.add(new WalkTask(ctx, AREA.combatRatArea));
-        }  else if (location.is(IslandLocation.ATTACKING_RATS)) {
+        } else if (location.is(IslandLocation.ATTACKING_RATS)
+                || location.is(IslandLocation.SIT_BACK_AND_WATCH)) {
             System.out.println("Attacking rats");
-//            taskList.add();
+            taskList.add(new CombatTask(ctx));
+        } else if (location.is(IslandLocation.WELL_DONE_FIRST_KILL)) {
+            taskList.add(new WalkTask(ctx, AREA.combatInstructorArea));
+            taskList.add(new TalkToEntity(ctx, NPC.COMBAT_INSTRUCTOR, IslandLocation.WELL_DONE_FIRST_KILL));
+
         } else if (location.is(IslandLocation.KITCHEN_COOKING)) {
             System.out.println("KITCHEN COOKING");
             taskList.add(new TalkToEntity(ctx, NPC.MASTER_CHEF, IslandLocation.KITCHEN_COOKING));
@@ -239,6 +257,96 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             Condition.sleep(2000);
         } else if (location.is(IslandLocation.COOKING)) {
             taskList.add(new CookingTutorial(ctx));
+        } else if (location.is(IslandLocation.RAT_RAGING)) {
+            System.out.println("Rat ranging");
+            taskList.add(new CombatTask(ctx, CombatTask.Type.RANGE));
+        } else if (location.is(IslandLocation.MOVING_AFTER_RANGING)) {
+            System.out.println("Moving forward after ranging");
+            taskList.add(new WalkTask(ctx, AREA.bankStairsArea));
+        } else if (location.is(IslandLocation.BANKING) || location.is(IslandLocation.YOUR_BANKING)) {
+            System.out.println("Moving to banking area");
+
+            taskList.add(new WalkTask(ctx, AREA.bankArea));
+            taskList.add(new Banking(ctx));
+
+        } else if (location.is(IslandLocation.POLL_BOOTH) || location.is(IslandLocation.A_FLAG_APPEARS)) {
+            System.out.println("Checking Poll");
+
+            taskList.add(new WalkTask(ctx, AREA.pollArea));
+            taskList.add(new SelectingPoll(ctx));
+
+        } else if (location.is(IslandLocation.POLL_MOVING_ON) || location.is(IslandLocation.ACCOUNT_MANAGEMENT)) {
+            System.out.println("Account Guide area");
+
+            taskList.add(new WalkTask(ctx, AREA.accountGuideArea));
+            taskList.add(new TalkToEntity(ctx, NPC.ACCOUNT_GUIDE, IslandLocation.ACCOUNT_MANAGEMENT));
+
+        } else if (location.is(IslandLocation.ACCOUNT_MANAGEMENT_TAB)) {
+            System.out.println("Account Management Tab");
+            TabChanger tabChanger = new TabChanger(ctx);
+            tabChanger.changeTo(TabChanger.AccountManagement);
+
+        } else if (location.is(IslandLocation.ACCOUNT_MANAGEMENT_SECOND_TALK)) {
+            System.out.println("Talking again with account guide");
+
+            taskList.add(new WalkTask(ctx, AREA.accountGuideArea));
+            taskList.add(new TalkToEntity(ctx, NPC.ACCOUNT_GUIDE, IslandLocation.ACCOUNT_MANAGEMENT_SECOND_TALK));
+
+        } else if (location.is(IslandLocation.ACCOUNT_MANAGEMENT_MOVING_ON)) {
+            System.out.println("Walking outside the area");
+            taskList.add(new WalkTask(ctx, AREA.outsideAccountGuideArea));
+
+        } else if (location.is(IslandLocation.PRAYER_ALTAR)) {
+            System.out.println("Walking to chapel and talk to brother brace");
+            taskList.add(new WalkTask(ctx, AREA.prayerChapelArea));
+            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_ALTAR));
+
+        } else if (location.is(IslandLocation.PRAYER_MENU_TAB)) {
+            System.out.println("Checking prayer tab");
+            TabChanger tabChanger = new TabChanger(ctx);
+            tabChanger.changeTo(Game.Tab.PRAYER);
+
+        } else if (location.is(IslandLocation.PRAYER_DESCRIPTION)) {
+            System.out.println("Talking again with bother brace");
+            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_DESCRIPTION));
+
+        } else if (location.is(IslandLocation.FRIENDS_AND_IGNORE_LIST)) {
+            System.out.println("Changing tabs to see friend and ignore list");
+            TabChanger tabChanger = new TabChanger(ctx);
+            tabChanger.changeTo(Game.Tab.FRIENDS_LIST);
+
+        } else if (location.is(IslandLocation.FRIENDS_AND_IGNORE_LIST_TALK)) {
+            System.out.println("Talking about friend and ignore list");
+            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_DESCRIPTION));
+
+        } else if (location.is(IslandLocation.YOUR_FINAL_INSTRUCTOR)) {
+            System.out.println("Last instruction, pass through the door");
+            taskList.add(new WalkTask(ctx, AREA.outsideChapelSouthArea, OBJECTS.CHAPEL_DOOR));
+
+        } else if (location.is(IslandLocation.WALKING_TO_WIZARDS_HOUSE)) {
+            System.out.println("Walking to wizard");
+            taskList.add(new WalkTask(ctx, AREA.wizardArea));
+            taskList.add(new TalkToEntity(ctx, NPC.MAGIC_INSTRUCTOR, IslandLocation.WALKING_TO_WIZARDS_HOUSE));
+
+        } else if (location.is(IslandLocation.MAGIC_TABS)) {
+            System.out.println("Switching to magic tab");
+            TabChanger tabChanger = new TabChanger(ctx);
+            tabChanger.changeTo(Game.Tab.MAGIC);
+
+        } else if (location.is(IslandLocation.MAGIC_SPELLS_TALK)) {
+            System.out.println("Magic spells talk");
+            taskList.add(new TalkToEntity(ctx, NPC.MAGIC_INSTRUCTOR, IslandLocation.MAGIC_SPELLS_TALK));
+        } else if (location.is(IslandLocation.MAGIC_KILL_A_CHICKEN)) {
+            System.out.println("Spell kill a chicken");
+            taskList.add(new WalkTask(ctx, AREA.closeToChicken));
+            taskList.add(new CombatTask(ctx, CombatTask.Type.MAGIC, NPC.CHICKEN));
+        } else if (location.is(IslandLocation.TO_MAINLAND)) {
+            System.out.println("Talking to magician");
+            TabChanger t = new TabChanger(ctx);
+            t.changeTo(Game.Tab.INVENTORY);
+
+            taskList.add(new TalkToMagic(ctx));
+
         } else if (location.is(IslandLocation.SETTING_APPEARANCE)) {
             taskList.add(new CustomizeAvatar(ctx));
         } else if (location.is(IslandLocation.GETTING_STARTED)) {

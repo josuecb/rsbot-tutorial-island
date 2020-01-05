@@ -23,4 +23,22 @@ public class AREA {
     public static Area combatInstructorArea = new Area(new Tile(3106, 9510, 0), new Tile(3112, 9509, 0));
 
     public static Area combatRatArea = new Area(new Tile(3101, 9521, 0), new Tile(3109, 9515, 0));
+
+    public static Area bankStairsArea = new Area(new Tile(3110, 3125, 0), new Tile(3112, 3124, 0));
+    public static Area bankArea = new Area(new Tile(3120, 3123, 0), new Tile(3122, 3122, 0));
+
+    public static Tile pollArea = new Tile(3120, 3121, 0);
+
+    public static Tile accountGuideArea = new Tile(3125, 3124, 0);
+
+    public static Tile outsideAccountGuideArea = new Tile(3131, 3124, 0);
+
+    public static Tile prayerChapelArea =  new Tile(3125, 3107, 0);
+
+    public static Tile outsideChapelSouthArea =  new Tile(3122, 3100, 0);
+
+    public static Area wizardArea = new Area(new Tile(3141, 3091, 0), new Tile(3140, 3089, 0));
+
+    public static Tile closeToChicken = new Tile(3139, 3091, 0);
+
 }

@@ -29,5 +29,8 @@ public class ITEM {
     public static int BRONZE_SWORD = 1277;
     public static int WOODEN_SHIELD = 1171;
 
+   public static int SHORT_BOW = 841;
+    public static int BRONZE_ARROW = 882;
+
 
 }

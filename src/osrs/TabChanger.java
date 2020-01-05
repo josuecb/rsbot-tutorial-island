@@ -1,10 +1,11 @@
 package osrs;
 
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Game;
 
 public class TabChanger {
-
+    public static String AccountManagement = "account management";
     private ClientContext ctx;
 
     public TabChanger(ClientContext ctx) {
@@ -25,4 +26,18 @@ public class TabChanger {
         }
         return false;
     }
+
+    public boolean changeTo(String tab) {
+        if (tab.equals(TabChanger.AccountManagement) && accountManagementTab().textureId() != -1) {
+            accountManagementTab().click();
+            return true;
+        }
+        return false;
+    }
+
+    private Component accountManagementTab() {
+        return ctx.widgets.component(548, 33);
+    }
+
+
 }

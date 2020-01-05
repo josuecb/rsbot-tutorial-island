@@ -11,11 +11,19 @@ public class TalkToEntity extends Task {
     int NpcID = -1;
     String taskString;
     BasicQuery<Npc> npcs = null;
+    String randomOpt = null;
 
     public TalkToEntity(ClientContext ctx, int NPCid, String TaskString) {
         super(ctx);
         this.NpcID = NPCid;
         this.taskString = TaskString;
+    }
+
+    public TalkToEntity(ClientContext ctx, int NPCid, String TaskString, String randomOption) {
+        super(ctx);
+        this.NpcID = NPCid;
+        this.taskString = TaskString;
+        this.randomOpt = randomOption;
     }
 
     @Override
@@ -53,7 +61,11 @@ public class TalkToEntity extends Task {
 
                 System.out.println(opts.getRandomOption());
                 if (opts.getRandomOption() != null) {
-                    ctx.chat.continueChat(opts.getRandomOption());
+                    if (randomOpt == null)
+                        ctx.chat.continueChat(opts.getRandomOption());
+                    else {
+                        ctx.chat.continueChat(randomOpt);
+                    }
                 } else {
                     ctx.chat.clickContinue();
                 }
@@ -90,6 +102,24 @@ public class TalkToEntity extends Task {
             return 9;
         } else if (taskLocation.equals(IslandLocation.HOLDING_DAGGER)) {
             return 9;
+        } else if (taskLocation.equals(IslandLocation.WELL_DONE_FIRST_KILL)) {
+            return 10;
+        } else if (taskLocation.equals(IslandLocation.ACCOUNT_MANAGEMENT)) {
+            return 11;
+        } else if (taskLocation.equals(IslandLocation.ACCOUNT_MANAGEMENT_SECOND_TALK)) {
+            return 12;
+        } else if (taskLocation.equals(IslandLocation.PRAYER_ALTAR)) {
+            return 13;
+        } else if (taskLocation.equals(IslandLocation.PRAYER_DESCRIPTION)) {
+            return 14;
+        } else if (taskLocation.equals(IslandLocation.FRIENDS_AND_IGNORE_LIST_TALK)) {
+            return 15;
+        } else if (taskLocation.equals(IslandLocation.WALKING_TO_WIZARDS_HOUSE)) {
+            return 16;
+        } else if (taskLocation.equals(IslandLocation.MAGIC_SPELLS_TALK)) {
+            return 17;
+        } else if (taskLocation.equals(IslandLocation.TO_MAINLAND)) {
+            return 18;
         } else {
             return -1;
         }

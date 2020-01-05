@@ -51,5 +51,41 @@ public class IslandLocation {
     public static String COMBAT_GO_IN = "As well as this, monsters are weak to specific attack styles. Click on the gates to continue.";
 
     public static String ATTACKING_RATS = "It's time to slay some rats!";
+    public static String SIT_BACK_AND_WATCH = "While you are fighting you will see a bar over your head";
+    public static String WELL_DONE_FIRST_KILL = "Pass through the gate and talk to the combat instructor.";
 
+    public static String RAT_RAGING = "Now you have a bow and some arrows.";
+    public static String MOVING_AFTER_RANGING = "You have completed the tasks here. To move on, click on the indicated ladder.";
+
+    public static String BANKING = "Follow the path and you will come to the front of the building. This is the Bank of Gielinor";
+
+    public static String YOUR_BANKING = "This is your bank. You can store things";
+
+    public static String POLL_BOOTH = "Now it's time for a quick look at polls.";
+    public static String A_FLAG_APPEARS = "A flag appears on the box to let you know when";
+
+    public static String POLL_MOVING_ON = "Polls are run periodically to let the Old School RuneScape";
+
+    public static String ACCOUNT_MANAGEMENT = "The guide here will tell you all about your account";
+    public static String ACCOUNT_MANAGEMENT_TAB = "Click on the flashing icon to open your Account Management menu.";
+    public static String ACCOUNT_MANAGEMENT_SECOND_TALK = "This is your Account Management menu where you can control";
+
+    public static String ACCOUNT_MANAGEMENT_MOVING_ON = "Continue through the next door.";
+
+    public static String PRAYER_ALTAR = "Follow the path to the chapel and enter it";
+    public static String PRAYER_MENU_TAB = "Click on the flashing icon to open the Prayer menu.";
+    public static String PRAYER_DESCRIPTION = "Talk with Brother Brace and he'll tell you about prayers.";
+
+    public static String FRIENDS_AND_IGNORE_LIST = "You should now see another new icon. Click on the flashing face icon to open your friends and ignore lists.";
+    public static String FRIENDS_AND_IGNORE_LIST_TALK = "These two lists can be very helpful for keeping track of your friends";
+
+    public static String YOUR_FINAL_INSTRUCTOR = "You're almost finished on tutorial island. Pass through the door to";
+    public static String WALKING_TO_WIZARDS_HOUSE = "Follow the path to the wizard's house, where you will be shown how to cast spells";
+
+    public static String MAGIC_TABS = "Open up the magic interface by clicking on the flashing icon.";
+    public static String MAGIC_SPELLS_TALK = "This is your magic interface. All of your spells can be found";
+
+    public static String MAGIC_KILL_A_CHICKEN = "You now have some runes. All spells require runes to cast them.";
+
+    public static String TO_MAINLAND = "You're nearly finished with the tutorial.";
 }
