@@ -56,7 +56,10 @@ public class TutorialLocation {
     public void smartChecker() {
         if (!this.wholeBox().visible()) {
             if (this.inputBox().visible()) {
-                if (this.inputBox().text().contains(IslandLocation.NOTHING_INTERESTING_HAPPENS)) {
+                if (this.inputBox().text().contains(IslandLocation.NOTHING_INTERESTING_HAPPENS) ||
+                        this.inputBox().text().contains(IslandLocation.ALREADY_UNDER_ATTACK) ||
+                        this.inputBox().text().contains(IslandLocation.CANT_ATTACK_OTHERS_PLAYERS_IF_NOT_WILDERNESS) ||
+                        this.inputBox().text().contains(IslandLocation.CANT_REACH_THAT)) {
                     this.ctx.widgets.component(162, 45).click();
                 } else {
                     Walker walker = new Walker(ctx);

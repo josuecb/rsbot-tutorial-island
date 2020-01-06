@@ -45,10 +45,10 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 //        taskList.add(new CustomizeAvatar(ctx));
 //        taskList.add(new ChooseName(ctx, "bewbow2"));
 //        taskList.add(new CameraMotion(ctx));
-//        taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE));
+//        taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE));
 //        taskList.add(new CustomSettingTask(ctx));
 //        taskList.add(new Walk(ctx));
-//        taskList.add(new TalkToEntity(ctx, NPC.SURVIVAL_EXPERT));
+//        taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT));
 
     }
 
@@ -58,15 +58,15 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         TutorialLocation location = new TutorialLocation(ctx);
 
         if (location.is(IslandLocation.CHOOSE_DISPLAY_NAME)) {
-            taskList.add(new ChooseName(ctx, "redempl6"));
+            taskList.add(new ChooseName(ctx, "redempl8"));
         } else if (location.is(IslandLocation.OPTION_MENU)) {
             System.out.println("OPTION MENU");
             taskList.add(new CustomSettingTask(ctx));
-            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.OPTION_MENU));
+            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
         } else if (location.is(IslandLocation.OPTION_MENU_TALK)) {
             System.out.println("OPTION MENU TALK");
             taskList.add(new CustomSettingTask(ctx));
-            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.OPTION_MENU_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
         } else if (location.is(IslandLocation.YOU_VE_GIVEN_AN_ITEM)) {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
@@ -75,7 +75,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.STATS);
         } else if (location.is(IslandLocation.SKILLS_AND_EXPERIENCE)) {
-            taskList.add(new TalkToEntity(ctx, NPC.SURVIVAL_EXPERT, IslandLocation.SKILLS_AND_EXPERIENCE));
+            taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT, 1));
         } else if (location.is(IslandLocation.FISHING)) {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
@@ -90,7 +90,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new Walk(ctx));
         } else if (location.is(IslandLocation.MOVING_TO_SURVIVAL_EXPERT)) {
             taskList.add(new Walk(ctx));
-            taskList.add(new TalkToEntity(ctx, NPC.SURVIVAL_EXPERT, IslandLocation.MOVING_TO_SURVIVAL_EXPERT));
+            taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT, 1));
         } else if (location.is(IslandLocation.SURVIVAL_EXPERT_GIVES_YOU_NET)) {
             ctx.widgets.component(193, 0, 2).click();
             System.out.println("Can continue?: " + ctx.chat.canContinue());
@@ -110,31 +110,22 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_COOKING)) {
             System.out.println("Going to quest area@@@@@@@@@@@@@");
             taskList.add(new WalkTask(ctx, AREA.questTutorialArea));
-        } else if (location.is(IslandLocation.MOVING_AFTER_COOKING_FISH)) {
+        } else if (location.is(IslandLocation.MOVING_AFTER_COOKING_FISH) || location.is(IslandLocation.MOVING_AFTER_COOKING_FISH2)) {
             System.out.println("Going outside");
             taskList.add(new WalkTask(ctx, AREA.kitchenTutorialArea));
         } else if (location.is(IslandLocation.LEARN_QUEST)) {
             System.out.println("Talking to Quest Guide");
-            taskList.add(new TalkToEntity(ctx, NPC.QUEST_GUIDE, IslandLocation.LEARN_QUEST));
+            taskList.add(new TalkToEntityTask(ctx, NPC.QUEST_GUIDE, 1));
         } else if (location.is(IslandLocation.QUEST_JOURNAL_TALK)) {
             System.out.println("QUEST JOURNAL");
-            taskList.add(new TalkToEntity(ctx, NPC.QUEST_GUIDE, IslandLocation.QUEST_JOURNAL_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.QUEST_GUIDE, 1));
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_QUEST)) {
             System.out.println("MOVING TO CAVE");
             taskList.add(new WalkTask(ctx, AREA.miningStartingPointArea, new String[]{"staircase"}));
-
-//            if (!AREA.miningStartingPointArea.containsOrIntersects(ctx.players.local())) {
-//                Tile randomTile = AREA.miningStartingPointArea.getRandomTile();
-//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
-//
-//                Walker w = new Walker(ctx);
-//                w.avoidChecking("staircase");
-//                w.walkPath(tiles);
-//            }
         } else if (location.is(IslandLocation.MINING_AND_SMITHING_WALK)) {
             System.out.println("MOVING TO MINING");
             taskList.add(new WalkTask(ctx, AREA.miningTutorialArea));
-            taskList.add(new TalkToEntity(ctx, NPC.MINING_INSTRUCTOR, IslandLocation.MINING_AND_SMITHING_WALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.MINING_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.MINING_TIN_ORE)) {
             System.out.println("Mining tin ore");
             taskList.add(new WalkTask(ctx, AREA.tinOreTutorialArea));
@@ -152,19 +143,11 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_COOKING)) {
             System.out.println("Going to kitchen area");
             taskList.add(new WalkTask(ctx, AREA.kitchenTutorialArea));
-
-//            if (!AREA.kitchenTutorialArea.containsOrIntersects(ctx.players.local())) {
-//                Tile randomTile = AREA.kitchenTutorialArea.getRandomTile();
-//                Tile[] tiles = {ctx.players.local().tile(), randomTile};
-//
-//                Walker w = new Walker(ctx);
-//                w.walkPath(tiles);
-//            }
         } else if (location.is(IslandLocation.SMITHING_SMELT_BRONZE_BAR)) {
             System.out.println("smelting ore");
             taskList.add(new WalkTask(ctx, AREA.furnaceTutorialArea));
             taskList.add(new SmeltBarTask(ctx));
-        } else if (location.is(IslandLocation.SMITHING_A_DAGGER)) {
+        } else if (location.is(IslandLocation.SMITHING_A_DAGGER) || location.is(IslandLocation.SMITHING_A_DAGGER_ACTION)) {
             System.out.println("smithing a dagger");
             taskList.add(new WalkTask(ctx, AREA.anvilTutorialArea));
             taskList.add(new SmithDaggerTask(ctx));
@@ -174,7 +157,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.COMBAT_TALK)) {
             System.out.println("going to instructor");
             taskList.add(new WalkTask(ctx, AREA.combatInstructorArea));
-            taskList.add(new TalkToEntity(ctx, NPC.COMBAT_INSTRUCTOR, IslandLocation.COMBAT_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.COMBAT_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.EQUIPMENT_ITEM)) {
             System.out.println("EQUIPMENT ITEM");
             TabChanger tabChanger = new TabChanger(ctx);
@@ -194,7 +177,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new EquipmentTask(ctx, new int[]{ITEM.BRONZE_DAGGER}));
         } else if (location.is(IslandLocation.HOLDING_DAGGER)) {
             System.out.println("HOLDING DAGGER");
-            taskList.add(new TalkToEntity(ctx, NPC.COMBAT_INSTRUCTOR, IslandLocation.HOLDING_DAGGER));
+            taskList.add(new TalkToEntityTask(ctx, NPC.COMBAT_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.UNEQUIPPING_ITEM)) {
             System.out.println("Unnequiping items");
             taskList.add(new EquipmentTask(ctx, new int[]{ITEM.WOODEN_SHIELD, ITEM.BRONZE_SWORD}));
@@ -211,15 +194,15 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new CombatTask(ctx));
         } else if (location.is(IslandLocation.WELL_DONE_FIRST_KILL)) {
             taskList.add(new WalkTask(ctx, AREA.combatInstructorArea));
-            taskList.add(new TalkToEntity(ctx, NPC.COMBAT_INSTRUCTOR, IslandLocation.WELL_DONE_FIRST_KILL));
+            taskList.add(new TalkToEntityTask(ctx, NPC.COMBAT_INSTRUCTOR, 1));
 
         } else if (location.is(IslandLocation.KITCHEN_COOKING)) {
             System.out.println("KITCHEN COOKING");
-            taskList.add(new TalkToEntity(ctx, NPC.MASTER_CHEF, IslandLocation.KITCHEN_COOKING));
+            taskList.add(new TalkToEntityTask(ctx, NPC.MASTER_CHEF, 1));
         } else if (location.is(IslandLocation.SMITHING_WEAPON_TALK)) {
             System.out.println("talk to make a weapon");
             taskList.add(new WalkTask(ctx, AREA.miningTutorialArea));
-            taskList.add(new TalkToEntity(ctx, NPC.MINING_INSTRUCTOR, IslandLocation.SMITHING_WEAPON_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.MINING_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.MAKING_DOUGH)) {
             System.out.println("MAKING DOUGH");
             Item potOfFlour = ctx.inventory.select().id(ITEM.POT_OF_FLOUR).poll();
@@ -269,9 +252,8 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.POLL_MOVING_ON) || location.is(IslandLocation.ACCOUNT_MANAGEMENT)) {
             System.out.println("Account Guide area");
-
             taskList.add(new WalkTask(ctx, AREA.accountGuideArea));
-            taskList.add(new TalkToEntity(ctx, NPC.ACCOUNT_GUIDE, IslandLocation.ACCOUNT_MANAGEMENT));
+            taskList.add(new TalkToEntityTask(ctx, NPC.ACCOUNT_GUIDE, 1));
 
         } else if (location.is(IslandLocation.ACCOUNT_MANAGEMENT_TAB)) {
             System.out.println("Account Management Tab");
@@ -282,7 +264,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             System.out.println("Talking again with account guide");
 
             taskList.add(new WalkTask(ctx, AREA.accountGuideArea));
-            taskList.add(new TalkToEntity(ctx, NPC.ACCOUNT_GUIDE, IslandLocation.ACCOUNT_MANAGEMENT_SECOND_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.ACCOUNT_GUIDE, 1));
 
         } else if (location.is(IslandLocation.ACCOUNT_MANAGEMENT_MOVING_ON)) {
             System.out.println("Walking outside the area");
@@ -291,7 +273,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.PRAYER_ALTAR)) {
             System.out.println("Walking to chapel and talk to brother brace");
             taskList.add(new WalkTask(ctx, AREA.prayerChapelArea));
-            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_ALTAR));
+            taskList.add(new TalkToEntityTask(ctx, NPC.BROTHER_BRACE, 1));
 
         } else if (location.is(IslandLocation.PRAYER_MENU_TAB)) {
             System.out.println("Checking prayer tab");
@@ -300,7 +282,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.PRAYER_DESCRIPTION)) {
             System.out.println("Talking again with bother brace");
-            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_DESCRIPTION));
+            taskList.add(new TalkToEntityTask(ctx, NPC.BROTHER_BRACE, 1));
 
         } else if (location.is(IslandLocation.FRIENDS_AND_IGNORE_LIST)) {
             System.out.println("Changing tabs to see friend and ignore list");
@@ -309,7 +291,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.FRIENDS_AND_IGNORE_LIST_TALK)) {
             System.out.println("Talking about friend and ignore list");
-            taskList.add(new TalkToEntity(ctx, NPC.BROTHER_BRACE, IslandLocation.PRAYER_DESCRIPTION));
+            taskList.add(new TalkToEntityTask(ctx, NPC.BROTHER_BRACE, 1));
 
         } else if (location.is(IslandLocation.YOUR_FINAL_INSTRUCTOR)) {
             System.out.println("Last instruction, pass through the door");
@@ -318,7 +300,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.WALKING_TO_WIZARDS_HOUSE)) {
             System.out.println("Walking to wizard");
             taskList.add(new WalkTask(ctx, AREA.wizardArea));
-            taskList.add(new TalkToEntity(ctx, NPC.MAGIC_INSTRUCTOR, IslandLocation.WALKING_TO_WIZARDS_HOUSE));
+            taskList.add(new TalkToEntityTask(ctx, NPC.MAGIC_INSTRUCTOR, 1));
 
         } else if (location.is(IslandLocation.MAGIC_TABS)) {
             System.out.println("Switching to magic tab");
@@ -327,7 +309,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.MAGIC_SPELLS_TALK)) {
             System.out.println("Magic spells talk");
-            taskList.add(new TalkToEntity(ctx, NPC.MAGIC_INSTRUCTOR, IslandLocation.MAGIC_SPELLS_TALK));
+            taskList.add(new TalkToEntityTask(ctx, NPC.MAGIC_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.MAGIC_KILL_A_CHICKEN)) {
             System.out.println("Spell kill a chicken");
             taskList.add(new WalkTask(ctx, AREA.closeToChicken));
@@ -342,7 +324,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.SETTING_APPEARANCE)) {
             taskList.add(new CustomizeAvatar(ctx));
         } else if (location.is(IslandLocation.GETTING_STARTED)) {
-            taskList.add(new TalkToEntity(ctx, NPC.GIELINOR_GUIDE, IslandLocation.GETTING_STARTED));
+            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
         } else {
             TutorialLocation tl = new TutorialLocation(ctx);
             tl.smartChecker();

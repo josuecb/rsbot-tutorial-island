@@ -181,13 +181,16 @@ public class Walker {
         } else {
             System.out.println("rotating camera");
             if (ctx.movement.step(obstacle)) {                                                           //Can't see the obstacle, step towards it.
-                ctx.camera.turnTo(obstacle);                                                            //and turn the camera.
-                Condition.wait(new Callable<Boolean>() {
-                    @Override
-                    public Boolean call() throws Exception {
-                        return p.animation() == -1 && !p.inMotion();
-                    }
-                }, 1000, 3);
+//                ctx.camera.turnTo(obstacle);                                                            //and turn the camera.
+                SmartCamera sc = new SmartCamera(ctx, true);
+                sc.rotate360Camera(4);
+
+//                Condition.wait(new Callable<Boolean>() {
+//                    @Override
+//                    public Boolean call() throws Exception {
+//                        return p.animation() == -1 && !p.inMotion();
+//                    }
+//                }, 1000, 3);
             }
 
         }
@@ -251,6 +254,9 @@ public class Walker {
      * @return Bounds. If not found, default bounds returned.
      */
     private int[] getBounds(GameObject go) {
+        SmartCamera sc = new SmartCamera(ctx, true);
+        sc.rotate360Camera(4);
+
         switch (getType(go.name())) {
             case DOOR:
                 System.out.println("door orientation: " + go.orientation());

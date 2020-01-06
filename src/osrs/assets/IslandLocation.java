@@ -2,6 +2,10 @@ package osrs.assets;
 
 public class IslandLocation {
     public static String NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens.";
+    public static String ALREADY_UNDER_ATTACK = "I'm already under attack.";
+    public static String CANT_REACH_THAT = "I can't reach that!";
+    public static String CANT_ATTACK_OTHERS_PLAYERS_IF_NOT_WILDERNESS = "You can't attack players when you're not in the Wilderness.";
+
     public static String CHOOSE_DISPLAY_NAME = "Choosing a Display Name";
     public static String SETTING_APPEARANCE = "Setting your appearance";
     public static String GETTING_STARTED = "Getting started";
@@ -21,9 +25,10 @@ public class IslandLocation {
 
 
     // TODO: Write complete message
-    public static String MOVING_AFTER_COOKING_FISH = "Remember, you can use your arrow keys to rotate the camera.";
+    public static String MOVING_AFTER_COOKING_FISH = "Follow the path until you get to the door with the yellow arrow above it. Click on the door to open it. Remember that you can also move around by clicking on the minimap in the top right.";
+    public static String MOVING_AFTER_COOKING_FISH2 = "Well done, you've just cooked your first meal!";
 
-//    public static String MOVING_ON_AFTER_COOKING = "Follow the path until you get to the door with the yellow arrow above it. Remember, you can use your arrow keys to rotate the camera.";
+    //    public static String MOVING_ON_AFTER_COOKING = "Follow the path until you get to the door with the yellow arrow above it. Remember, you can use your arrow keys to rotate the camera.";
     public static String MOVING_ON_AFTER_COOKING = "Follow the path to the next guide. When you get there, click on the door to pass through it. Remember, you can use your arrow keys to rotate the camera.";
     public static String MOVING_ON_AFTER_QUEST = "It's time to enter some caves.";
     public static String MOVING_ON_AFTER_KITCHEN = "You've baked your first loaf of bread.";
@@ -43,6 +48,8 @@ public class IslandLocation {
     public static String SMITHING_WEAPON_TALK = "You've made a bronze bar! Speak to the mining instructor";
 
     public static String SMITHING_A_DAGGER = "To smith you'll need a hammer and enough metal bars to make the desired item";
+
+    public static String SMITHING_A_DAGGER_ACTION = "Now you have the smithing menu open, you will see a list of all the things you can make.";
 
     public static String MOVING_AFTER_SMITHING = "Congratulations, you've made your first weapon";
 

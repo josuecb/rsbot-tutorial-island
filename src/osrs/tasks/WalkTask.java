@@ -66,7 +66,7 @@ public class WalkTask extends Task {
     public boolean activate() {
         return !ctx.players.local().inMotion() &&
                 (area != null && !area.containsOrIntersects(ctx.players.local())
-                        || (area == null && ctx.players.local().tile().distanceTo(this.specificTile) > 2));
+                        || (area == null && ctx.players.local().tile().distanceTo(this.specificTile) > 1));
     }
 
     @Override

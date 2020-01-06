@@ -28,15 +28,7 @@ public class SelectingPoll extends Task {
             System.out.println("is not opened Yet");
             pollBooth().interact("Use");
 
-            Condition.wait(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    TutorialLocation location = new TutorialLocation(ctx);
-
-                    flagNextMessage().click();
-                    return true;
-                }
-            }, Helper.smartSecondsGen(), 5);
+            Condition.wait(() -> closeButton().click(), Helper.smartSecondsGen(), 5);
         } else {
             closeBooth();
         }
