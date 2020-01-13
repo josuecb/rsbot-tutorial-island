@@ -24,7 +24,7 @@ public class SmartCamera {
             @Override
             public Boolean call() throws Exception {
 
-                System.out.println("Rotating: " + ctx.camera.yaw());
+//                System.out.println("Rotating: " + ctx.camera.yaw());
                 mainAngle += new Random().nextInt(360 / intervals < 3 ? 2 : intervals) + 10;
                 ctx.camera.angle(mainAngle);
                 if (mainAngle % 2 == 0)
@@ -38,12 +38,12 @@ public class SmartCamera {
     }
 
     public void moveDownCamera() {
-        System.out.println("Moving all the way down");
+//        System.out.println("Moving all the way down");
         this.ctx.camera.pitch(false);
     }
 
     public void moveUpCamera() {
-        System.out.println("Moving all the way UP");
+//        System.out.println("Moving all the way UP");
         this.ctx.camera.pitch(true);
     }
 }

@@ -25,7 +25,7 @@ public class ChatOptions extends Chat {
         List<Integer> opts = Helper.optionIndexGen(this.get().size());
         Collections.shuffle(opts);
 
-        System.out.println(opts);
+//        System.out.println(opts);
         Stack<Integer> optionTasks = new Stack<Integer>();
         optionTasks.addAll(opts);
 

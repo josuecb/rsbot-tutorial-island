@@ -30,19 +30,18 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new ChooseName(ctx, sw.getUsername()));
         } else if (location.is(IslandLocation.OPTION_MENU) || location.is(IslandLocation.OPTION_MENU_TALK)) {
             System.out.println("OPTION MENU");
+
             taskList.add(new CustomSettingTask(ctx));
             taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
-//            taskList.add(new CustomSettingTask(ctx));
-//            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
-//        } else if (location.is(IslandLocation.OPTION_MENU_TALK)) {
-//            System.out.println("OPTION MENU TALK");
-//            taskList.add(new CustomSettingTask(ctx));
-//            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
+
         } else if (location.is(IslandLocation.YOU_VE_GIVEN_AN_ITEM)) {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
-            System.out.println(ctx.game.tab());
+
+            System.out.println("Current Tab" + ctx.game.tab());
         } else if (location.is(IslandLocation.YOU_VE_GAINED_SOME_EXP)) {
+            System.out.println("Switching to tab: " + ctx.game.tab());
+
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.STATS);
         } else if (location.is(IslandLocation.SKILLS_AND_EXPERIENCE)) {
@@ -66,7 +65,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT, 1));
         } else if (location.is(IslandLocation.SURVIVAL_EXPERT_GIVES_YOU_NET)) {
             ctx.widgets.component(193, 0, 2).click();
-            System.out.println("Can continue?: " + ctx.chat.canContinue());
+            System.out.println("Clicking on net: " + ctx.chat.canContinue());
         } else if (location.is(IslandLocation.MOVING_ON_AFTER_KITCHEN)) {
             taskList.add(new WalkTask(ctx, AREA.afterWardsOutsideKitchenArea));
         } else if (location.is(IslandLocation.FANCY_A_RUN)) {
@@ -332,7 +331,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
             for (Task t : detectLocation()) {
                 if (t.activate()) {
-                    System.out.println("Task started: " + count++);
+//                    System.out.println("Task started: " + count++);
                     t.execute();
                     break;
                 }

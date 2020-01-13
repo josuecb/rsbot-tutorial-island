@@ -70,14 +70,14 @@ public class WalkTask extends Task {
 
     @Override
     public void execute() {
-        System.out.println("Start Walking");
+//        System.out.println("Start Walking");
 
 
         Tile randomTile = this.area == null ? this.specificTile : this.area.getRandomTile();
         Tile[] tiles = {ctx.players.local().tile(), randomTile};
 
-        System.out.println("Random Tile: " + randomTile.toString());
-        System.out.println(Arrays.toString(tiles));
+//        System.out.println("Random Tile: " + randomTile.toString());
+//        System.out.println(Arrays.toString(tiles));
         w = new Walker(ctx);
 
         for (String avoidType : this.avoidTypes)
@@ -88,7 +88,7 @@ public class WalkTask extends Task {
         Condition.wait(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                System.out.println("Waiting");
+//                System.out.println("Waiting");
                 if (rotateTo > 0)
                     ctx.camera.turnTo(ctx.objects.select().id(rotateTo).nearest().poll());
                 return ctx.players.local().inMotion() || Helper.checkIfStoppedThenShutDown(ctx);

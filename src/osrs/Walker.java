@@ -63,19 +63,19 @@ public class Walker {
      * @return True if obstacle was clicked. False otherwise.
      */
     public boolean handleObstacle(Tile[] t) {
-        System.out.println("handling obstacles");
+//        System.out.println("handling obstacles");
         Tile nextTile = getNextTile(t);                                       //The calculated next tile.
-        System.out.println("Next tile: " + nextTile.toString());
+//        System.out.println("Next tile: " + nextTile.toString());
         /*
          * Return false as there is no obstacle to handle.
          * Perhaps this was called whilst we were still walking
          * and the tile became reachable?
          */
         if (nextTile.matrix(ctx).reachable()) {
-            System.out.println("Calculating if next tile is reachable");
+//            System.out.println("Calculating if next tile is reachable");
             return false;
         }
-        System.out.println("next tile is not reachable");
+//        System.out.println("next tile is not reachable");
 
         final Player p = ctx.players.local();
         double distance = Double.POSITIVE_INFINITY;
@@ -92,7 +92,7 @@ public class Walker {
 //        ctx.controller.stop();
         for (GameObject go : ctx.objects.select().name(
                 Pattern.compile(this.regex, Pattern.CASE_INSENSITIVE)).nearest()) {                            //Changed to filter by name else all the filtering in the next part takes much too long to be considered effective..
-            System.out.println(go.toString());
+//            System.out.println(go.toString());
             double calcDist = go.tile().distanceTo(new Tile(nextTile.x(), nextTile.y(), p.tile().floor()));
             /*
              * Check if the next tile is on a different floor. If it is then
@@ -152,7 +152,7 @@ public class Walker {
 
 
         if (obstacle == null) {
-            System.out.println("Obstacle is null");
+//            System.out.println("Obstacle is null");
             ctx.camera.angle('n');
             return false;
         }
@@ -179,7 +179,7 @@ public class Walker {
                 }
             }
         } else {
-            System.out.println("rotating camera");
+//            System.out.println("rotating camera");
             if (ctx.movement.step(obstacle)) {                                                           //Can't see the obstacle, step towards it.
 //                ctx.camera.turnTo(obstacle);                                                            //and turn the camera.
                 SmartCamera sc = new SmartCamera(ctx, true);
@@ -258,7 +258,7 @@ public class Walker {
 
         switch (getType(go.name())) {
             case DOOR:
-                System.out.println("door orientation: " + go.orientation());
+//                System.out.println("door orientation: " + go.orientation());
                 switch (go.orientation()) {
                     case 0:
                     case 4:

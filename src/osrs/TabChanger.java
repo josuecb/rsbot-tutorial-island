@@ -20,8 +20,8 @@ public class TabChanger {
     public boolean changeTo(Game.Tab tab) {
         if (!ctx.game.tab().equals(tab)) {
             ctx.game.tab(tab);
-            System.out.print("Switching to: ");
-            System.out.println(ctx.game.tab());
+//            System.out.print("Switching to: ");
+//            System.out.println(ctx.game.tab());
             return true;
         }
         return false;
