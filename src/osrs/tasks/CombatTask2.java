@@ -1,5 +1,6 @@
 package osrs.tasks;
 
+import osrs.SmartCamera;
 import osrs.Task;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
@@ -7,7 +8,6 @@ import org.powerbot.script.rt4.*;
 import osrs.Helper;
 import osrs.TabChanger;
 import osrs.assets.ITEM;
-import talker.SmartCamera;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -118,7 +118,7 @@ public class CombatTask2 extends Task {
 
     private void makeRandomStuff() {
         if ((new Random().nextInt(100) + 20) % 2 == 0) {
-            SmartCamera sc = new SmartCamera(ctx);
+            SmartCamera sc = new SmartCamera(ctx, true);
             sc.rotate360Camera(1);
         } else {
             npcToAttack.interact(true, "Attack");

@@ -18,9 +18,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
     @Override
     public void start() {
-        sw = new SettingWindow("Tutrial");
-
-
+        sw = new SettingWindow(getName());
     }
 
     public List<Task> detectLocation() {
