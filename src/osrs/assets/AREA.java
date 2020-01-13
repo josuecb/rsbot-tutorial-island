@@ -41,5 +41,5 @@ public class AREA {
 
     public static Tile closeToChicken = new Tile(3139, 3091, 0);
 
-    public static Area lumbridgeArea = new Area(new Tile(3232, 3222, 0), new Tile(3235, 3235, 0));
+    public static Area lumbridgeArea = new Area(new Tile(3228, 3210, 0), new Tile(3235, 3235, 0));
 }
