@@ -41,9 +41,9 @@ public class MiningTask extends Task {
         GameObject ore = ctx.objects.select().id(this.oreId).nearest().poll();
 
         if (bronzePickItem.valid() && ore.valid()) {
-            ore.interact(true, "Prospect");
-            System.out.println("prospecting tin ore");
-            Condition.sleep(2000);
+//            ore.interact(true, "Prospect");
+//            System.out.println("prospecting tin ore");
+//            Condition.sleep(2000);
             ore.interact(true, "Mine");
         }
 

@@ -7,7 +7,6 @@ import osrs.Helper;
 import osrs.Task;
 import osrs.Walker;
 import org.powerbot.script.Area;
-import osrs.assets.OBJECTS;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -92,7 +91,7 @@ public class WalkTask extends Task {
                 System.out.println("Waiting");
                 if (rotateTo > 0)
                     ctx.camera.turnTo(ctx.objects.select().id(rotateTo).nearest().poll());
-                return ctx.players.local().inMotion();
+                return ctx.players.local().inMotion() || Helper.checkIfStoppedThenShutDown(ctx);
             }
         }, Helper.smartSecondsGen(), 5);
     }

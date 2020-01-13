@@ -3,6 +3,7 @@ package osrs.tasks;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
+import osrs.Helper;
 import osrs.Settings;
 import osrs.TabChanger;
 import osrs.Task;
@@ -23,19 +24,18 @@ public class CustomSettingTask extends Task {
     public boolean activate() {
         Settings s = new Settings(ctx);
 
-        System.out.println("is Actove: " + s.isActive(Settings.OPTION.SMALL_SCREEN));
-        System.out.println(("is Equal: " +
-        (!(s.isActive(Settings.OPTION.SMALL_SCREEN) && ctx.game.tab().equals(Game.Tab.LOGOUT)))));
+        System.out.println("is small screen active?: " + s.isActive(Settings.OPTION.SMALL_SCREEN));
+        System.out.println(("Can be activated? : " +
+                (!(s.isActive(Settings.OPTION.SMALL_SCREEN) && ctx.game.tab().equals(Game.Tab.LOGOUT)))));
 
-        System.out.println(ctx.game.tab());
-        System.out.println((!(s.isActive(Settings.OPTION.SMALL_SCREEN) && ctx.game.tab().equals(Game.Tab.LOGOUT))));
+        System.out.println("Current Tab: " + ctx.game.tab());
         return !(s.isActive(Settings.OPTION.SMALL_SCREEN) && ctx.game.tab().equals(Game.Tab.LOGOUT));
     }
 
     @Override
     public void execute() {
-//        System.out.print("Current Tab: ");
-//        System.out.println(ctx.game.tab());
+        System.out.print("Current Tab: ");
+        System.out.println(ctx.game.tab());
         TabChanger tabChanger = new TabChanger(ctx);
         tabChanger.changeTo(Game.Tab.OPTIONS);
 
@@ -44,8 +44,9 @@ public class CustomSettingTask extends Task {
         Condition.wait(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+                Helper.checkIfStoppedThenShutDown(ctx);
                 // SCREEN SETTINGS
-//                System.out.println("Adding:");
+                System.out.println("Adding:");
                 setSetting.add(s.clickOn(Settings.OPTION.SCREEN_SETTINGS));
                 setSetting.add(s.clickOn(Settings.OPTION.SMALL_SCREEN));
                 setSetting.add(s.clickOn(Settings.OPTION.HIGH_BRIGHT));
@@ -60,12 +61,12 @@ public class CustomSettingTask extends Task {
 
                 for (Boolean set : setSetting) {
                     if (!set) {
-//                        System.out.println("Repeating");
-                        return true;
+                        System.out.println("Repeating");
+                        return false;
                     }
                 }
 
-                return false;
+                return true;
             }
         }, 250, 2);
     }

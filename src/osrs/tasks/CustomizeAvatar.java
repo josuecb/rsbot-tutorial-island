@@ -38,7 +38,7 @@ public class CustomizeAvatar extends Task {
         while (!optionTasks.isEmpty()) {
             switch (optionTasks.pop()) {
                 case 0:
-                    randomizeHead();
+                    randomizeSex();
                     break;
                 case 1:
                     randomizeJaw();
@@ -62,7 +62,7 @@ public class CustomizeAvatar extends Task {
                     randomizeSkin();
                     break;
                 case 8:
-                    randomizeSex();
+                    randomizeHead();
                     break;
                 default:
                     System.out.println("Not randomizing any mh");

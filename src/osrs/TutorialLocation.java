@@ -3,7 +3,7 @@ package osrs;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Component;
-import org.powerbot.script.rt4.Widget;
+import osrs.assets.AREA;
 import osrs.assets.IslandLocation;
 
 public class TutorialLocation {
@@ -59,7 +59,9 @@ public class TutorialLocation {
                 if (this.inputBox().text().contains(IslandLocation.NOTHING_INTERESTING_HAPPENS) ||
                         this.inputBox().text().contains(IslandLocation.ALREADY_UNDER_ATTACK) ||
                         this.inputBox().text().contains(IslandLocation.CANT_ATTACK_OTHERS_PLAYERS_IF_NOT_WILDERNESS) ||
-                        this.inputBox().text().contains(IslandLocation.CANT_REACH_THAT)) {
+                        this.inputBox().text().contains(IslandLocation.CANT_REACH_THAT) ||
+                        this.inputBox().text().contains(IslandLocation.UNLOCKED_MUSIC_TRACK) ||
+                        this.inputBox().text().contains(IslandLocation.THEY_HEAL_SOME)) {
                     this.ctx.widgets.component(162, 45).click();
                 } else {
                     Walker walker = new Walker(ctx);
@@ -72,7 +74,13 @@ public class TutorialLocation {
             clickIfOnTopBox();
             clickIfOnTopBox2();
             clickIfCongratsBox();
+            continueChatBox2();
+            continueChatBox();
         }
+    }
+
+    public boolean finishScript() {
+        return AREA.lumbridgeArea.containsOrIntersects(ctx.players.local());
     }
 
     public boolean clickIfOnTopBox() {
@@ -96,6 +104,24 @@ public class TutorialLocation {
     public boolean clickIfCongratsBox() {
         if (this.ctx.widgets.component(233, 3).visible()) {
             this.ctx.widgets.component(233, 3).click();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean continueChatBox2() {
+        if (this.ctx.widgets.component(217, 3).visible()) {
+            this.ctx.widgets.component(217, 3).click();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean continueChatBox() {
+        if (this.ctx.widgets.component(231, 3).visible()) {
+            this.ctx.widgets.component(231, 3).click();
             return true;
         }
 

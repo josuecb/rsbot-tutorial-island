@@ -83,6 +83,7 @@ public class CombatTask extends Task {
                 } else {
                     System.out.println("ATTACKING NOW");
                     System.out.println(ctx.players.local().animation());
+                    System.out.println(ctx.players.local().animation());
                     monster.interact("Attack");
                 }
             } else {
@@ -119,6 +120,13 @@ public class CombatTask extends Task {
     private boolean lowHealth() {
         return ctx.combat.healthPercent() < 60;
     }
+
+
+
+
+
+
+
 
     private void switchToMelee() {
         int mainHandID = ctx.equipment.itemAt(Equipment.Slot.MAIN_HAND).id();

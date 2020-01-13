@@ -4,6 +4,8 @@ public class IslandLocation {
     public static String NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens.";
     public static String ALREADY_UNDER_ATTACK = "I'm already under attack.";
     public static String CANT_REACH_THAT = "I can't reach that!";
+    public static String UNLOCKED_MUSIC_TRACK = "You have unlocked the music track:";
+    public static String THEY_HEAL_SOME= "They heal some health.";
     public static String CANT_ATTACK_OTHERS_PLAYERS_IF_NOT_WILDERNESS = "You can't attack players when you're not in the Wilderness.";
 
     public static String CHOOSE_DISPLAY_NAME = "Choosing a Display Name";

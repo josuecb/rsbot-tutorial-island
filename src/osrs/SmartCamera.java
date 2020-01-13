@@ -17,34 +17,24 @@ public class SmartCamera {
     }
 
     public void rotate360Camera(int intervals) {
-        if (this._360) {
-            System.out.println("Rotating: " + this.ctx.camera.yaw());
-            this.ctx.camera.angle('e');
-            System.out.println("Current X   : " + ctx.camera.x());
-            Condition.wait(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    System.out.println("Rotating: " + ctx.camera.yaw());
-                    mainAngle += new Random().nextInt(360 / intervals) + 10;
-                    ctx.camera.angle(mainAngle);
-                    if (mainAngle % 2 == 0)
-                        moveDownCamera();
-                    else
-                        moveUpCamera();
+//        System.out.println("Rotating: " + this.ctx.camera.yaw());
+        this.ctx.camera.angle('e');
+//        System.out.println("Current X   : " + ctx.camera.x());
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
 
-                    if (ctx.controller.isStopping()) {
-                        ctx.controller.stop();
-                        return true;
-                    }
+                System.out.println("Rotating: " + ctx.camera.yaw());
+                mainAngle += new Random().nextInt(360 / intervals < 3 ? 2 : intervals) + 10;
+                ctx.camera.angle(mainAngle);
+                if (mainAngle % 2 == 0)
+                    moveDownCamera();
+                else
+                    moveUpCamera();
 
-                    return mainAngle > 350;
-                }
-            }, Helper.smartSecondsGen(), intervals);
-
-        } else {
-            System.out.println("Rotating: " + ctx.camera.yaw());
-
-        }
+                return mainAngle > 350 || Helper.checkIfStoppedThenShutDown(ctx);
+            }
+        }, Helper.smartSecondsGen() / (intervals < 3 ? 2 : intervals), intervals);
     }
 
     public void moveDownCamera() {

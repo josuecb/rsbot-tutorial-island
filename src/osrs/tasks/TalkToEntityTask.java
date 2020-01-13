@@ -71,24 +71,24 @@ public class TalkToEntityTask extends Task {
                 ctx.camera.turnTo(npc);
                 System.out.println("Turning Camera to NPC");
                 return this.talk(npc);
-            }
-
-            if (!ctx.chat.chatting()) {
-                npc.interact("Talk-to");
-
-                Condition.wait(() -> {
-                    System.out.println("Waiting to talk");
-                    return ctx.chat.chatting();
-                }, Helper.smartSecondsGen(), 4);
-            }
-
-            if (!opts.empty()) {
-                String opt = opts.getRandomOption();
-                ctx.chat.continueChat(opt);
             } else {
-                ctx.chat.clickContinue();
-                Condition.sleep(Helper.smartSecondsGen());
-                return true;
+                if (!ctx.chat.chatting()) {
+                    npc.interact("Talk-to");
+
+                    Condition.wait(() -> {
+                        System.out.println("Waiting to interact talking");
+                        return ctx.chat.chatting();
+                    }, Helper.smartSecondsGen(), 4);
+                } else {
+                    if (!opts.empty()) {
+                        String opt = opts.getRandomOption();
+                        ctx.chat.continueChat(opt);
+                    } else {
+                        ctx.chat.clickContinue();
+                        Condition.sleep(Helper.smartSecondsGen());
+                    }
+                    return true;
+                }
             }
         } else {
             System.out.println("Npc: " + npc.name() + " is not valid");

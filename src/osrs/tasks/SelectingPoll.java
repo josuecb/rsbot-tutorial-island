@@ -6,11 +6,7 @@ import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.GameObject;
 import osrs.Helper;
 import osrs.Task;
-import osrs.TutorialLocation;
-import osrs.assets.IslandLocation;
 import osrs.assets.OBJECTS;
-
-import java.util.concurrent.Callable;
 
 public class SelectingPoll extends Task {
     public SelectingPoll(ClientContext ctx) {

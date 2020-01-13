@@ -183,8 +183,7 @@ public class Walker {
             if (ctx.movement.step(obstacle)) {                                                           //Can't see the obstacle, step towards it.
 //                ctx.camera.turnTo(obstacle);                                                            //and turn the camera.
                 SmartCamera sc = new SmartCamera(ctx, true);
-                sc.rotate360Camera(4);
-
+                sc.rotate360Camera(1);
 //                Condition.wait(new Callable<Boolean>() {
 //                    @Override
 //                    public Boolean call() throws Exception {
@@ -263,8 +262,11 @@ public class Walker {
                 switch (go.orientation()) {
                     case 0:
                     case 4:
+                    case 5:
+                        return new int[]{-12, 102, -208, 0, 138, 85};
                     case 6:
-                        return new int[]{-5, 15, 0, -220, 0, 90};
+                        return new int[]{102, 142, -210, 0, 120, 7};
+//                        return new int[]{-5, 15, 0, -220, 0, 90};
                     case 1:
                         return new int[]{0, 90, 0, -220, 110, 130};
                     case 2:

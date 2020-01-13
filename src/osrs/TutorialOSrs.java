@@ -5,6 +5,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.*;
 import osrs.assets.*;
+import osrs.gui.SettingWindow;
 import osrs.tasks.*;
 
 import java.util.ArrayList;
@@ -12,43 +13,13 @@ import java.util.List;
 
 @Script.Manifest(name = "Tutrial", description = "OSRS Tutorial", properties = "client=4; author=Josue; topic=999;")
 public class TutorialOSrs extends PollingScript<ClientContext> {
-    List<Task> taskList = new ArrayList<Task>();
-
-    public static boolean[] tutorSpoken = {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-    };
-
+    SettingWindow sw;
     int count = 0;
 
     @Override
     public void start() {
-//        taskList.add(new CustomizeAvatar(ctx));
-//        taskList.add(new ChooseName(ctx, "bewbow2"));
-//        taskList.add(new CameraMotion(ctx));
-//        taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE));
-//        taskList.add(new CustomSettingTask(ctx));
-//        taskList.add(new Walk(ctx));
-//        taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT));
+        sw = new SettingWindow("Tutrial");
+
 
     }
 
@@ -58,15 +29,17 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         TutorialLocation location = new TutorialLocation(ctx);
 
         if (location.is(IslandLocation.CHOOSE_DISPLAY_NAME)) {
-            taskList.add(new ChooseName(ctx, "redempl8"));
-        } else if (location.is(IslandLocation.OPTION_MENU)) {
+            taskList.add(new ChooseName(ctx, sw.getUsername()));
+        } else if (location.is(IslandLocation.OPTION_MENU) || location.is(IslandLocation.OPTION_MENU_TALK)) {
             System.out.println("OPTION MENU");
             taskList.add(new CustomSettingTask(ctx));
             taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
-        } else if (location.is(IslandLocation.OPTION_MENU_TALK)) {
-            System.out.println("OPTION MENU TALK");
-            taskList.add(new CustomSettingTask(ctx));
-            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
+//            taskList.add(new CustomSettingTask(ctx));
+//            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
+//        } else if (location.is(IslandLocation.OPTION_MENU_TALK)) {
+//            System.out.println("OPTION MENU TALK");
+//            taskList.add(new CustomSettingTask(ctx));
+//            taskList.add(new TalkToEntityTask(ctx, NPC.GIELINOR_GUIDE, 1));
         } else if (location.is(IslandLocation.YOU_VE_GIVEN_AN_ITEM)) {
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
@@ -77,19 +50,21 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.SKILLS_AND_EXPERIENCE)) {
             taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT, 1));
         } else if (location.is(IslandLocation.FISHING)) {
+            System.out.println("Fishing");
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.INVENTORY);
 
             taskList.add(new FishingTutorial(ctx));
         } else if (location.is(IslandLocation.WOODCUTING)) {
+            System.out.println("Woodcutting");
 //            System.out.println("Ahhh");
             taskList.add(new WoodcutTutorial(ctx));
         } else if (location.is(IslandLocation.FIREMAKING)) {
             taskList.add(new FiremakingTutorial(ctx));
         } else if (location.is(IslandLocation.MOVING_TO_FIRST)) {
-            taskList.add(new Walk(ctx));
+            taskList.add(new WalkTask(ctx, AREA.woodcutTutorialArea, 1));
         } else if (location.is(IslandLocation.MOVING_TO_SURVIVAL_EXPERT)) {
-            taskList.add(new Walk(ctx));
+            taskList.add(new WalkTask(ctx, AREA.woodcutTutorialArea, 1));
             taskList.add(new TalkToEntityTask(ctx, NPC.SURVIVAL_EXPERT, 1));
         } else if (location.is(IslandLocation.SURVIVAL_EXPERT_GIVES_YOU_NET)) {
             ctx.widgets.component(193, 0, 2).click();
@@ -164,7 +139,7 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             tabChanger.changeTo(Game.Tab.EQUIPMENT);
         } else if (location.is(IslandLocation.WORN_INVENTORY)) {
             System.out.println("WORN INVENTORY");
-            Component wornEquipmentComp = ctx.widgets.component(387, 18);
+            Component wornEquipmentComp = ctx.widgets.component(387, 1);
 
             if (wornEquipmentComp.visible()) {
                 wornEquipmentComp.click();
@@ -191,7 +166,8 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else if (location.is(IslandLocation.ATTACKING_RATS)
                 || location.is(IslandLocation.SIT_BACK_AND_WATCH)) {
             System.out.println("Attacking rats");
-            taskList.add(new CombatTask(ctx));
+//            taskList.add(new CombatTask(ctx));
+            taskList.add(new CombatTask2(ctx, NPC.GIANT_RAT, CombatTask2.Type.MELEE));
         } else if (location.is(IslandLocation.WELL_DONE_FIRST_KILL)) {
             taskList.add(new WalkTask(ctx, AREA.combatInstructorArea));
             taskList.add(new TalkToEntityTask(ctx, NPC.COMBAT_INSTRUCTOR, 1));
@@ -235,7 +211,8 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             taskList.add(new CookingTutorial(ctx));
         } else if (location.is(IslandLocation.RAT_RAGING)) {
             System.out.println("Rat ranging");
-            taskList.add(new CombatTask(ctx, CombatTask.Type.RANGE));
+//            taskList.add(new CombatTask(ctx, CombatTask.Type.RANGE));
+            taskList.add(new CombatTask2(ctx, NPC.GIANT_RAT, CombatTask2.Type.RANGE));
         } else if (location.is(IslandLocation.MOVING_AFTER_RANGING)) {
             System.out.println("Moving forward after ranging");
             taskList.add(new WalkTask(ctx, AREA.bankStairsArea));
@@ -252,6 +229,11 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
         } else if (location.is(IslandLocation.POLL_MOVING_ON) || location.is(IslandLocation.ACCOUNT_MANAGEMENT)) {
             System.out.println("Account Guide area");
+            Component pollCloseBtn = ctx.widgets.component(310, 2, 11);
+            if (pollCloseBtn.visible()) {
+                pollCloseBtn.click();
+            }
+
             taskList.add(new WalkTask(ctx, AREA.accountGuideArea));
             taskList.add(new TalkToEntityTask(ctx, NPC.ACCOUNT_GUIDE, 1));
 
@@ -306,14 +288,13 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
             System.out.println("Switching to magic tab");
             TabChanger tabChanger = new TabChanger(ctx);
             tabChanger.changeTo(Game.Tab.MAGIC);
-
         } else if (location.is(IslandLocation.MAGIC_SPELLS_TALK)) {
             System.out.println("Magic spells talk");
             taskList.add(new TalkToEntityTask(ctx, NPC.MAGIC_INSTRUCTOR, 1));
         } else if (location.is(IslandLocation.MAGIC_KILL_A_CHICKEN)) {
             System.out.println("Spell kill a chicken");
             taskList.add(new WalkTask(ctx, AREA.closeToChicken));
-            taskList.add(new CombatTask(ctx, CombatTask.Type.MAGIC, NPC.CHICKEN));
+            taskList.add(new CombatTask2(ctx, NPC.CHICKEN, CombatTask2.Type.MAGIC));
         } else if (location.is(IslandLocation.TO_MAINLAND)) {
             System.out.println("Talking to magician");
             TabChanger t = new TabChanger(ctx);
@@ -328,6 +309,13 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
         } else {
             TutorialLocation tl = new TutorialLocation(ctx);
             tl.smartChecker();
+
+            if (tl.finishScript()) {
+                System.out.println("switching off script");
+                sw.switchOff();
+                ctx.controller.stop();
+            }
+
             System.out.println("pitch " + ctx.camera.pitch(99));
 
             return taskList;
@@ -342,24 +330,17 @@ public class TutorialOSrs extends PollingScript<ClientContext> {
 
     @Override
     public void poll() {
-//        ctx.controller.stop();
+        if (sw.start()) {
 
-
-//        System.out.println("Checking: " + continued);
-
-        for (Task t : detectLocation()) {
-            if (t.activate()) {
-                System.out.println("Task started: " + count++);
-                t.execute();
-                break;
+            for (Task t : detectLocation()) {
+                if (t.activate()) {
+                    System.out.println("Task started: " + count++);
+                    t.execute();
+                    break;
+                }
             }
-        }
 
-//        System.out.println("pitch " + ctx.camera.pitch(99));
-//        System.out.println("new angle " + ctx.camera.angle(0));
-//        System.out.println("pitch " + ctx.camera.pitch());
-//        System.out.println("yaw " + ctx.camera.yaw());
-//        Condition.sleep(2000);
+        }
     }
 
 

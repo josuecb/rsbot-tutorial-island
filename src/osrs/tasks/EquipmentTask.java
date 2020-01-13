@@ -75,7 +75,7 @@ public class EquipmentTask extends Task {
     }
 
     private Component wornEquipIcon() {
-        return ctx.widgets.component(387, 18);
+        return ctx.widgets.component(387, 1);
     }
 
     private Component closeWornStats() {
